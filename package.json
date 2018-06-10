@@ -1,0 +1,22 @@
+{
+  "name": "static-blog-generator",
+  "version": "1.0.0",
+  "description": "blog generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/songzhou21/static-blog-generator.git"
+  },
+  "author": "songzhou",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/songzhou21/static-blog-generator/issues"
+  },
+  "homepage": "https://github.com/songzhou21/static-blog-generator#readme",
+  "dependencies": {
+    "htmlparser2": "^3.9.2"
+  }
+}
