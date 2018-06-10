@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/songzhou21/static-blog-generator#readme",
   "dependencies": {
-    "htmlparser2": "^3.9.2"
+    "jsdom": "^11.11.0"
   }
 }
