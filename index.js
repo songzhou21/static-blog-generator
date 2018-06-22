@@ -42,6 +42,10 @@ function generate_index(index_path, posts) {
 		const document = dom.window.document
 		const postsElement = document.getElementsByClassName('posts')[0]
 
+		while(postsElement.firstChild) {
+			postsElement.removeChild(postsElement.firstChild)
+		}
+
 		posts.forEach(post => {
 			/// list node
 			const postListNode = document.createElement("li")
@@ -70,6 +74,10 @@ function generate_index(index_path, posts) {
 _allPosts(_post_path)
 	.then(function(files) {
 		return generate_index(_index_path, files);
-	}).then(function(index) {
-		console.log(index)
+	}).then(function(index_html) {
+		fs.writeFile(_index_path, index_html, function(error) {
+			if(error) {
+				console.log(error)
+			}
+		})
 	})
