@@ -7,41 +7,69 @@ const {JSDOM} = jsdom
 const _post_path = path.join(process.cwd(), '_posts')
 const _index_path = path.join(process.cwd(), "index.html")
 
-// const parser = new DOMParser()
-// let doc = parser.parseFromString(,"text/html")
+function _allFiles(dir_path) {
+	return new Promise((resolve, reject) => {
+		/// get post files
+		fs.readdir(dir_path, (error, files) => {
+			if (error) {
+				reject(error)
+			} else {
+				resolve(files)
+			}
+		})
+	})
+}
 
-/// read index.html
-JSDOM.fromFile(_index_path, null).then(dom => {
-	const document = dom.window.document
-	const postsElement = document.getElementsByClassName('posts')[0]
+function _allPosts(dir_path) {
+	return _allFiles(dir_path)
+		.then(function(files) {
+			return files.filter(file => {
+				const ext = path.extname(file)
+				return ext === '.md'
+			})
+		})
+		.catch(reason => {
+			console.log(reason)
+		})
+}
 
+function _loadDOM(path) {
+	return JSDOM.fromFile(path)
+}
 
-	/// get post files
-	fs.readdir(_post_path, (error, files) => {
-		files.filter(file => {
-			const ext = path.extname(file)
-			return ext === '.md'
-		}).forEach(file => {
+function generate_index(index_path, posts) {
+	return _loadDOM(index_path).then(function(dom) {
+		const document = dom.window.document
+		const postsElement = document.getElementsByClassName('posts')[0]
+
+		posts.forEach(post => {
 			/// list node
-			const postListNode= document.createElement("li")
+			const postListNode = document.createElement("li")
 
 			/// a node
 			const postHrefNode = document.createElement("a")
 			postListNode.appendChild(postHrefNode)
 			const postHref = document.createAttribute("href")
-			postHref.value = 'posts/' + path.parse(file).name + '.html'
+			postHref.value = 'posts/' + path.parse(post).name + '.html'
 			postHrefNode.setAttributeNode(postHref)
 
 			/// title
-			const title = document.createTextNode(path.basename(file))
+			const title = document.createTextNode(path.basename(post))
 			postHrefNode.appendChild(title)
 
 			/// insert post node
 			postsElement.insertBefore(postListNode, null)
+		});
 
-		})
+		return dom.serialize()
 	})
-	
-	console.log(dom.serialize())
+}
 
-})
+
+// generate index.html
+_allPosts(_post_path)
+	.then(function(files) {
+		return generate_index(_index_path, files);
+	}).then(function(index) {
+		console.log(index)
+	})
