@@ -58,7 +58,7 @@ function generate_index(index_path, posts) {
 			postHrefNode.setAttributeNode(postHref)
 
 			/// title
-			const title = document.createTextNode(path.basename(post))
+			const title = document.createTextNode(path.parse(post).name)
 			postHrefNode.appendChild(title)
 
 			/// insert post node
