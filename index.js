@@ -72,11 +72,12 @@ function generate_index(index_path, posts) {
 
 // generate index.html
 _allPosts(_post_path)
-	.then(function(files) {
+	.then(function (files) {
 		return generate_index(_index_path, files);
-	}).then(function(index_html) {
-		fs.writeFile(_index_path, index_html, function(error) {
-			if(error) {
+	})
+	.then(function (index_html) {
+		fs.writeFile(_index_path, index_html, function (error) {
+			if (error) {
 				console.log(error)
 			}
 		})
